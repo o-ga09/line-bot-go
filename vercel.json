@@ -6,8 +6,22 @@
     },
     "routes": [
         {
-            "src": "/",
+            "src": "/api",
             "dest": "/api",
+            "methods": [
+                "GET"
+            ]
+        },
+        {
+            "src": "/api/user/(?<id>[^/]*)",
+            "dest": "/api/user",
+            "methods": [
+                "GET"
+            ]
+        },
+        {
+            "src": "/api/json",
+            "dest": "/api/json",
             "methods": [
                 "GET"
             ]
