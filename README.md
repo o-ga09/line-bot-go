@@ -54,4 +54,3 @@ curl --location 'https://api.line.me/v2/bot/message/push' \
 ## Licence
 
 MIT @o-ga09
-curl -v -X GET "https://api.line.me/v2/bot/profile/Ub505d5a02b4cd31da7ed91de4b1da10e"　-H 'Authorization: Bearer ${token}'
