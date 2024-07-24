@@ -25,6 +25,13 @@
             "methods": [
                 "GET"
             ]
+        },
+        {
+            "src": "/callback",
+            "dest": "/api/callback",
+            "methods": [
+                "POST"
+            ]
         }
     ]
 }
