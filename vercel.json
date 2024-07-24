@@ -32,6 +32,13 @@
             "methods": [
                 "POST"
             ]
+        },
+        {
+            "src": "/api/push",
+            "dest": "/push",
+            "methods": [
+                "POST"
+            ]
         }
     ]
 }

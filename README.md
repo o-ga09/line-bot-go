@@ -24,6 +24,34 @@ $ go build cmd/main.go
 $ go test ./...
 ```
 
+## LINE Messaging APIを使用する
+
+- ユーザー情報取得
+
+```
+curl --location 'https://api.line.me/v2/bot/profile/[userId]' \
+--header 'Authorization: Bearer [access token]'
+```
+
+- プッシュ通知
+
+```
+curl --location 'https://api.line.me/v2/bot/message/push' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer [access token]' \
+--data '{
+    "to": "[userId]",
+    "notificationDisabled": false,
+    "messages": [
+        {
+            "type": "text",
+            "text": "Hello"
+        }
+    ]
+}'
+```
+
 ## Licence
 
 MIT @o-ga09
+curl -v -X GET "https://api.line.me/v2/bot/profile/Ub505d5a02b4cd31da7ed91de4b1da10e"　-H 'Authorization: Bearer ${token}'
