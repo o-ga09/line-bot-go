@@ -40,5 +40,9 @@
                 "POST"
             ]
         }
-    ]
+    ],
+    "crons": [{
+    "path": "/push",
+    "schedule": "0 0 6 * *"
+  }]
 }
