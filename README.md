@@ -12,12 +12,6 @@ $ vercel login
 $ vercel --prod
 ```
 
-## Build／ビルド方法
-
-```
-$ go build cmd/main.go
-```
-
 ## Test／テスト方法
 
 ```
