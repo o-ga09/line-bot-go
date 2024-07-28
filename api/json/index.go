@@ -2,11 +2,15 @@ package json
 
 import (
 	"encoding/json"
+	"log/slog"
 	"net/http"
 	"time"
+
+	"github.com/o-ga09/line-bot-go/pkg/logger"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
+	logger.Logger()
 	message := struct {
 		Code            int
 		Message         string
@@ -30,4 +34,5 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
 	w.Write(json)
+	slog.Info("success")
 }

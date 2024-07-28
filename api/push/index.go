@@ -1,20 +1,27 @@
 package push
 
 import (
-	"log"
+	"fmt"
+	"log/slog"
 	"net/http"
-	"os"
 
 	"github.com/google/uuid"
 	"github.com/line/line-bot-sdk-go/v8/linebot/messaging_api"
+	"github.com/o-ga09/line-bot-go/pkg/config"
+	"github.com/o-ga09/line-bot-go/pkg/logger"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	access_token := os.Getenv("LINE_ACCESS_TOKEN")
-	userId := os.Getenv("USERID")
+	logger.Logger()
+	cfg, err := config.New()
+	if err != nil {
+		slog.Error(fmt.Sprintf("config error: %v", err))
+	}
+	access_token := cfg.LineAccesstoken
+	userId := cfg.LineUserId
 	bot, err := messaging_api.NewMessagingApiAPI(access_token)
 	if err != nil {
-		log.Println(err)
+		slog.Error(fmt.Sprintf("can not connect line messaging api: %v", err))
 	}
 
 	retrykey := uuid.New().String()
@@ -32,4 +39,5 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		},
 		retrykey,
 	)
+	slog.Info("push message success")
 }

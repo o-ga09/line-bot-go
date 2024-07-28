@@ -2,30 +2,38 @@ package callback
 
 import (
 	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
-	"os"
 
 	"github.com/line/line-bot-sdk-go/linebot"
 	"github.com/line/line-bot-sdk-go/v8/linebot/messaging_api"
 	"github.com/line/line-bot-sdk-go/v8/linebot/webhook"
+	"github.com/o-ga09/line-bot-go/pkg/config"
+	"github.com/o-ga09/line-bot-go/pkg/logger"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	channel_secret := os.Getenv("LINE_CHANNEL_SECRET")
-	access_token := os.Getenv("LINE_ACCESS_TOKEN")
+	logger.Logger()
+	cfg, err := config.New()
+	if err != nil {
+		slog.Error(fmt.Sprintf("config error: %v", err))
+	}
+	channel_secret := cfg.LineChannelscret
+	access_token := cfg.LineAccesstoken
 	bot, err := messaging_api.NewMessagingApiAPI(access_token)
 
 	var reply_message string
 	if err != nil {
-		log.Fatalf("can not connect line messaging api: %v", err)
+		slog.Info(fmt.Sprintf("can not connect line messaging api: %v", err))
 	}
 
 	cb, err := webhook.ParseRequest(channel_secret, r)
 	if err != nil {
 		if err == linebot.ErrInvalidSignature {
+			slog.Info(fmt.Sprintf("invalid signature: %v", err))
 			w.WriteHeader(400)
 		} else {
+			slog.Error(fmt.Sprintf("can not parse request: %v", err))
 			w.WriteHeader(500)
 		}
 		return
@@ -41,7 +49,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			case webhook.UserSource:
 				res, err := bot.GetProfile(s.UserId)
 				if err != nil {
-					log.Println(err)
+					slog.Error(fmt.Sprintf("can not get profile: %v", err))
 				}
 				name = res.DisplayName
 			}
@@ -72,8 +80,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 					},
 				},
 			}); err != nil {
-				log.Print(err)
+				slog.Error(fmt.Sprintf("can not reply message: %v", err))
 			}
+			slog.Info(fmt.Sprintf("message send: %s", reply_message))
 		}
 	}
 }
